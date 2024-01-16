@@ -34,6 +34,7 @@ return {
         enabled = true, -- enable or disable format on save globally
         allow_filetypes = { -- enable format on save for specified filetypes only
           -- "go",
+          "lua",
         },
         ignore_filetypes = { -- disable format on save for specified filetypes
           -- "python",
@@ -50,8 +51,20 @@ return {
     },
     -- enable servers that you already have installed without mason
     servers = {
-      -- "pyright"
-    },
+			"gopls",
+		},
+
+		setup_handlers = {
+			-- first function changes the default setup handler
+			function(server, opts)
+				require("lspconfig")[server].setup(opts)
+			end,
+			-- keys for a specific server name will be used for that LSP
+			gopls = function(server, opts)
+				local go_opts = require("go.lsp").config() -- config() return the go.nvim gopls setup
+				require("lspconfig")["gopls"].setup(go_opts)
+			end,
+		},
   },
 
   -- Configure require("lazy").setup() options
@@ -81,5 +94,13 @@ return {
     --     ["~/%.config/foo/.*"] = "fooscript",
     --   },
     -- }
+    local format_sync_grp = vim.api.nvim_create_augroup("GoFormat", {})
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      pattern = "*.go",
+      callback = function()
+       require('go.format').goimport()
+      end,
+      group = format_sync_grp,
+    })
   end,
 }
