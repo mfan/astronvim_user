@@ -9,15 +9,24 @@ return {
     -- second key is the lefthand side of the map
 
     -- navigate buffer tabs with `H` and `L`
-    -- L = {
-    --   function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
-    --   desc = "Next buffer",
-    -- },
-    -- H = {
-    --   function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
-    --   desc = "Previous buffer",
-    -- },
+    L = {
+      function() require("astronvim.utils.buffer").nav(vim.v.count > 0 and vim.v.count or 1) end,
+      desc = "Next buffer",
+    },
+    H = {
+      function() require("astronvim.utils.buffer").nav(-(vim.v.count > 0 and vim.v.count or 1)) end,
+      desc = "Previous buffer",
+    },
 
+    -- mappings toggleterm using <esc>
+    ----     ["<esc>"] = {
+    ----       "",
+    ----       desc = "ESC to escape from terminal to nvim.",
+    ----     },
+    ----     ["<C-v><esc>"] = {
+    ----       "<esc>",
+    ----       desc = "send ESC to terminal through <C-v><esc>.",
+    ----     },
     -- mappings seen under group name "Buffer"
     ["<leader>bD"] = {
       function()
@@ -32,6 +41,9 @@ return {
     ["<leader>b"] = { name = "Buffers" },
     -- quick save
     -- ["<C-s>"] = { ":w!<cr>", desc = "Save File" },  -- change description but the same command
+    --
+    -- ToggleTerm shortcut key
+    ["t"] = { ":ToggleTerm myfloat<CR>", desc = "Toggle Terminal" },
   },
   t = {
     -- setting a mapping to false will disable it
